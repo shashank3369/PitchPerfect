@@ -31,10 +31,24 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hIj-t8-V7J">
-                                <rect key="frame" x="275" y="391" width="50" height="50"/>
+                                <rect key="frame" x="275" y="530" width="50" height="50"/>
                                 <state key="normal" image="Stop"/>
                                 <connections>
                                     <action selector="stopRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7AH-aS-tt0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="33j-jn-Z4x">
+                                <rect key="frame" x="133" y="447" width="42" height="30"/>
+                                <state key="normal" title="Pause"/>
+                                <connections>
+                                    <action selector="pauseRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mGg-W1-0pM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xu9-0G-DnB">
+                                <rect key="frame" x="412" y="447" width="55" height="30"/>
+                                <state key="normal" title="Resume"/>
+                                <connections>
+                                    <action selector="resumeRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jGq-GJ-oI9"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -42,16 +56,22 @@
                         <constraints>
                             <constraint firstItem="uvV-Bo-pg1" firstAttribute="top" secondItem="BfT-fN-G8B" secondAttribute="bottom" constant="12" id="2re-H6-di9"/>
                             <constraint firstItem="hIj-t8-V7J" firstAttribute="centerX" secondItem="BfT-fN-G8B" secondAttribute="centerX" id="4tw-Wb-NVV"/>
+                            <constraint firstAttribute="trailing" secondItem="Xu9-0G-DnB" secondAttribute="trailing" constant="133" id="51p-Ma-AbC"/>
                             <constraint firstItem="BfT-fN-G8B" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="UwT-ei-fCh"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Xu9-0G-DnB" secondAttribute="bottom" constant="123" id="ZOo-Ee-2VE"/>
+                            <constraint firstItem="33j-jn-Z4x" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="133" id="aKe-uT-3nh"/>
                             <constraint firstItem="uvV-Bo-pg1" firstAttribute="centerX" secondItem="BfT-fN-G8B" secondAttribute="centerX" id="c9i-nV-uy1"/>
-                            <constraint firstItem="hIj-t8-V7J" firstAttribute="top" secondItem="BfT-fN-G8B" secondAttribute="bottom" constant="41" id="lyN-fV-Al0"/>
+                            <constraint firstItem="Xu9-0G-DnB" firstAttribute="baseline" secondItem="33j-jn-Z4x" secondAttribute="baseline" id="gs6-LT-msR"/>
+                            <constraint firstItem="hIj-t8-V7J" firstAttribute="top" secondItem="BfT-fN-G8B" secondAttribute="bottom" constant="180" id="lyN-fV-Al0"/>
                             <constraint firstItem="BfT-fN-G8B" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xHs-g9-ao3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qUn-bG-JQe"/>
                     <connections>
+                        <outlet property="pauseButton" destination="33j-jn-Z4x" id="6AP-qQ-t22"/>
                         <outlet property="recordButton" destination="BfT-fN-G8B" id="etj-i0-i4B"/>
                         <outlet property="recordingLabel" destination="uvV-Bo-pg1" id="YS2-zn-Jcy"/>
+                        <outlet property="resumeButton" destination="Xu9-0G-DnB" id="z3T-Bh-mpQ"/>
                         <outlet property="stopRecordButton" destination="hIj-t8-V7J" id="pf0-Ua-MO3"/>
                         <segue destination="4sM-qT-wup" kind="show" identifier="stopRecording" id="OYF-fO-bgF"/>
                     </connections>
@@ -161,7 +181,7 @@
                         <outlet property="reverbButton" destination="Xk9-EY-gnl" id="Pnf-zs-9IW"/>
                         <outlet property="snailButton" destination="qse-BW-L21" id="MPC-L8-0cg"/>
                         <outlet property="stopButton" destination="1aE-d5-beE" id="QHP-X3-0jl"/>
-                        <outlet property="vaderButton" destination="S42-NR-mXS" id="iua-x2-PGo"/>
+                        <outlet property="vaderButton" destination="S42-NR-mXS" id="I1L-bi-aNo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bbE-Nc-lV7" userLabel="First Responder" sceneMemberID="firstResponder"/>

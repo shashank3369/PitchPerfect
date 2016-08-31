@@ -18,7 +18,7 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var reverbButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
     
-    var recordedAudioURL: NSURL!
+    var recordedAudio: RecordedObject!
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
@@ -37,7 +37,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func playButton(sender: UIButton) {
-        
+        configureUI(.Playing)
         switch (ButtonType(rawValue: sender.tag)!) {
             case .Slow:
                 playSound(rate: 0.5)
@@ -61,6 +61,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func stopPlayButton(sender: UIButton) {
+        configureUI(.NotPlaying)
         stopAudio()
     }
     

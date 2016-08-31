@@ -15,6 +15,8 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet weak var stopRecordButton: UIButton!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var recordingLabel: UILabel!
+    @IBOutlet weak var resumeButton: UIButton!
+    @IBOutlet weak var pauseButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +32,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         recordingLabel.text = "Recording in Progress"
         recordButton.enabled = false
         stopRecordButton.enabled = true
+        pauseButton.enabled = true
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
         let pathArray = [dirPath, recordingName]
@@ -56,10 +59,12 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     
     override func viewWillAppear(animated: Bool) {
         stopRecordButton.enabled = false
+        pauseButton.enabled = false
+        resumeButton.enabled = false
     }
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
-    if (flag) {
+        if (flag) {
             self.performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
         }
         else {
@@ -67,11 +72,25 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
     
+    @IBAction func pauseRecording(sender: AnyObject) {
+        audioRecorder.pause()
+        pauseButton.enabled = false
+        resumeButton.enabled = true
+    }
+    
+    @IBAction func resumeRecording(sender: AnyObject) {
+        audioRecorder.record()
+        pauseButton.enabled = true
+        resumeButton.enabled = false
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "stopRecording") {
             let playSoundsVC = segue.destinationViewController as! PlaySoundsViewController
+            
             let recordedAudioURL = sender as! NSURL
-            playSoundsVC.recordedAudioURL = recordedAudioURL
+            let newRecordedObject = RecordedObject(url: recordedAudioURL, name: NSDate().description)
+            playSoundsVC.recordedAudio = newRecordedObject
         }
     }
 }
