@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 class PlaySoundsViewController: UIViewController {
 
+    @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var snailButton: UIButton!
     @IBOutlet weak var rabbitButton: UIButton!
     @IBOutlet weak var vaderButton: UIButton!
@@ -23,6 +24,8 @@ class PlaySoundsViewController: UIViewController {
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: NSTimer!
+    var audioPlayer: AVAudioPlayer!
+    var timer: NSTimer!
     
     enum ButtonType: Int { case Slow = 0, Fast, Vader, Chipmunk, Echo, Reverb }
     
@@ -31,6 +34,16 @@ class PlaySoundsViewController: UIViewController {
         setupAudio()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(PlaySoundsViewController.shareSound))
         // Do any additional setup after loading the view.
+        
+        do {
+            self.audioPlayer = try AVAudioPlayer(contentsOfURL: recordedAudio.filePathURL)
+        } catch {
+            
+        }
+        self.audioPlayer.play()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(PlaySoundsViewController.updateSliderLocation), userInfo: nil, repeats: true)
+        
+        slider.maximumValue = Float(self.audioPlayer.duration)
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,6 +59,10 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func playButton(sender: UIButton) {
+        if (self.audioPlayer.playing) {
+            self.audioPlayer.stop()
+            self.timer.invalidate()
+        }
         configureUI(.Playing)
         switch (ButtonType(rawValue: sender.tag)!) {
             case .Slow:
@@ -78,6 +95,16 @@ class PlaySoundsViewController: UIViewController {
         configureUI(.NotPlaying)
     }
 
+    @IBAction func scrollThroughAudio(sender: AnyObject) {
+        self.audioPlayer.stop()
+        self.audioPlayer.currentTime = NSTimeInterval(slider.value)
+        self.audioPlayer.prepareToPlay()
+        self.audioPlayer.play()
+    }
+    
+    func updateSliderLocation() {
+        slider.value = Float(self.audioPlayer.currentTime)
+    }
     /*
     // MARK: - Navigation
 

@@ -164,13 +164,24 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="v60-IM-H9z">
                                         <rect key="frame" x="0.0" y="402" width="600" height="134"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aE-d5-beE">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="gXT-EL-sj2">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="134"/>
-                                                <state key="normal" image="Stop"/>
-                                                <connections>
-                                                    <action selector="stopPlayButton:" destination="4sM-qT-wup" eventType="touchUpInside" id="DZH-hF-zga"/>
-                                                </connections>
-                                            </button>
+                                                <subviews>
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hqG-VG-F8Y">
+                                                        <rect key="frame" x="-2" y="0.0" width="604" height="51.5"/>
+                                                        <connections>
+                                                            <action selector="scrollThroughAudio:" destination="4sM-qT-wup" eventType="valueChanged" id="sWn-Rp-8zX"/>
+                                                        </connections>
+                                                    </slider>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aE-d5-beE">
+                                                        <rect key="frame" x="0.0" y="50" width="600" height="83.5"/>
+                                                        <state key="normal" image="Stop"/>
+                                                        <connections>
+                                                            <action selector="stopPlayButton:" destination="4sM-qT-wup" eventType="touchUpInside" id="DZH-hF-zga"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -189,6 +200,7 @@
                         <outlet property="echoButton" destination="FON-72-S2c" id="YOc-RE-x6R"/>
                         <outlet property="rabbitButton" destination="fGj-wg-YKO" id="jAJ-cl-jIn"/>
                         <outlet property="reverbButton" destination="Xk9-EY-gnl" id="Pnf-zs-9IW"/>
+                        <outlet property="slider" destination="hqG-VG-F8Y" id="5zN-2f-TVC"/>
                         <outlet property="snailButton" destination="qse-BW-L21" id="MPC-L8-0cg"/>
                         <outlet property="stopButton" destination="1aE-d5-beE" id="QHP-X3-0jl"/>
                         <outlet property="vaderButton" destination="S42-NR-mXS" id="I1L-bi-aNo"/>
