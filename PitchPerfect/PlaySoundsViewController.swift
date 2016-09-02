@@ -25,15 +25,24 @@ class PlaySoundsViewController: UIViewController {
     var stopTimer: NSTimer!
     
     enum ButtonType: Int { case Slow = 0, Fast, Vader, Chipmunk, Echo, Reverb }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(PlaySoundsViewController.shareSound))
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func shareSound() {
+        let urlToShare = recordedAudio.filePathURL
+        let activityVC = UIActivityViewController(activityItems: [urlToShare], applicationActivities: nil)
+        self.presentViewController(activityVC, animated: true, completion: nil)
     }
     
     @IBAction func playButton(sender: UIButton) {
