@@ -31,26 +31,6 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="33j-jn-Z4x">
-                                <rect key="frame" x="20" y="473" width="200" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="gKX-FU-gGi"/>
-                                </constraints>
-                                <state key="normal" title="Pause"/>
-                                <connections>
-                                    <action selector="pauseRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mGg-W1-0pM"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xu9-0G-DnB">
-                                <rect key="frame" x="380" y="473" width="200" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="yab-Y1-Y2d"/>
-                                </constraints>
-                                <state key="normal" title="Resume"/>
-                                <connections>
-                                    <action selector="resumeRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jGq-GJ-oI9"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hIj-t8-V7J">
                                 <rect key="frame" x="275" y="390" width="50" height="50"/>
                                 <state key="normal" image="Stop"/>
@@ -58,29 +38,49 @@
                                     <action selector="stopRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7AH-aS-tt0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xao-hf-x3F">
+                                <rect key="frame" x="50" y="390" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="CrV-U2-3pL"/>
+                                </constraints>
+                                <state key="normal" image="Pause"/>
+                                <connections>
+                                    <action selector="pauseRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fYj-EZ-W0H"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yeo-Ph-ioN">
+                                <rect key="frame" x="500" y="390" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="9l1-kZ-8hc"/>
+                                </constraints>
+                                <state key="normal" image="Resume"/>
+                                <connections>
+                                    <action selector="resumeRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="j6i-Jc-zl3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="33j-jn-Z4x" secondAttribute="bottom" constant="97" id="0Tc-dG-Qw4"/>
                             <constraint firstItem="uvV-Bo-pg1" firstAttribute="top" secondItem="BfT-fN-G8B" secondAttribute="bottom" constant="8" id="2re-H6-di9"/>
-                            <constraint firstItem="Xu9-0G-DnB" firstAttribute="width" secondItem="33j-jn-Z4x" secondAttribute="width" id="3wZ-7a-dKN"/>
                             <constraint firstItem="hIj-t8-V7J" firstAttribute="centerX" secondItem="BfT-fN-G8B" secondAttribute="centerX" id="4tw-Wb-NVV"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Xu9-0G-DnB" secondAttribute="bottom" constant="97" id="C9X-nG-hOV"/>
-                            <constraint firstItem="Xu9-0G-DnB" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="IK7-8r-grg"/>
-                            <constraint firstItem="Xu9-0G-DnB" firstAttribute="leading" secondItem="33j-jn-Z4x" secondAttribute="trailing" constant="160" id="LWG-6R-yfi"/>
+                            <constraint firstItem="xao-hf-x3F" firstAttribute="bottom" secondItem="hIj-t8-V7J" secondAttribute="bottom" id="679-2A-AsC"/>
+                            <constraint firstItem="yeo-Ph-ioN" firstAttribute="bottom" secondItem="hIj-t8-V7J" secondAttribute="bottom" id="79w-Ll-lEO"/>
+                            <constraint firstItem="xao-hf-x3F" firstAttribute="top" secondItem="hIj-t8-V7J" secondAttribute="top" id="BrL-Bx-YHb"/>
+                            <constraint firstItem="yeo-Ph-ioN" firstAttribute="top" secondItem="hIj-t8-V7J" secondAttribute="top" id="Sj1-Z8-ugz"/>
                             <constraint firstItem="BfT-fN-G8B" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="3" id="UwT-ei-fCh"/>
                             <constraint firstItem="uvV-Bo-pg1" firstAttribute="centerX" secondItem="BfT-fN-G8B" secondAttribute="centerX" constant="-5.5" id="c9i-nV-uy1"/>
-                            <constraint firstItem="33j-jn-Z4x" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="eCr-UJ-zF2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yeo-Ph-ioN" secondAttribute="trailing" constant="30" id="eof-iH-jby"/>
                             <constraint firstItem="hIj-t8-V7J" firstAttribute="top" secondItem="BfT-fN-G8B" secondAttribute="bottom" constant="37" id="lyN-fV-Al0"/>
+                            <constraint firstItem="xao-hf-x3F" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="30" id="omx-SY-AAl"/>
                             <constraint firstItem="BfT-fN-G8B" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xHs-g9-ao3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qUn-bG-JQe"/>
                     <connections>
-                        <outlet property="pauseButton" destination="33j-jn-Z4x" id="6AP-qQ-t22"/>
+                        <outlet property="pauseButton" destination="xao-hf-x3F" id="YnD-He-YBG"/>
                         <outlet property="recordButton" destination="BfT-fN-G8B" id="etj-i0-i4B"/>
                         <outlet property="recordingLabel" destination="uvV-Bo-pg1" id="YS2-zn-Jcy"/>
-                        <outlet property="resumeButton" destination="Xu9-0G-DnB" id="z3T-Bh-mpQ"/>
+                        <outlet property="resumeButton" destination="yeo-Ph-ioN" id="rdh-DJ-LqR"/>
                         <outlet property="stopRecordButton" destination="hIj-t8-V7J" id="pf0-Ua-MO3"/>
                         <segue destination="4sM-qT-wup" kind="show" identifier="stopRecording" id="OYF-fO-bgF"/>
                     </connections>
@@ -221,8 +221,10 @@
         <image name="Chipmunk" width="100" height="100"/>
         <image name="DarthVader" width="100" height="100"/>
         <image name="Echo" width="100" height="100"/>
+        <image name="Pause" width="50" height="50"/>
         <image name="Rabbit" width="100" height="100"/>
         <image name="Record" width="100" height="100"/>
+        <image name="Resume" width="50" height="50"/>
         <image name="Reverb" width="100" height="100"/>
         <image name="Snail" width="100" height="100"/>
         <image name="Stop" width="50" height="50"/>
