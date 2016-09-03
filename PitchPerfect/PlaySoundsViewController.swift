@@ -34,16 +34,7 @@ class PlaySoundsViewController: UIViewController {
         setupAudio()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(PlaySoundsViewController.shareSound))
         // Do any additional setup after loading the view.
-        
-        do {
-            self.audioPlayer = try AVAudioPlayer(contentsOfURL: recordedAudio.filePathURL)
-        } catch {
-            
-        }
-        self.audioPlayer.play()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(PlaySoundsViewController.updateSliderLocation), userInfo: nil, repeats: true)
-        
-        slider.maximumValue = Float(self.audioPlayer.duration)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:self, action:#selector(PlaySoundsViewController.stopSound))
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,56 +54,196 @@ class PlaySoundsViewController: UIViewController {
             self.audioPlayer.stop()
             self.timer.invalidate()
         }
-        configureUI(.Playing)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(PlaySoundsViewController.updateSliderLocation), userInfo: nil, repeats: true)
+        configureUI("Playing")
         switch (ButtonType(rawValue: sender.tag)!) {
             case .Slow:
-                playSound(rate: 0.5)
+                playWithSpeed(0.5)
                 break
             case .Fast:
-                playSound(rate: 1.5)
+                playWithSpeed(2.0)
                 break
             case .Chipmunk:
-                playSound(pitch: 1000)
+                playWithPitch(1000)
                 break
             case .Vader:
-                playSound(pitch: -1000)
+                playWithPitch(1000)
                 break
             case .Echo:
-                playSound(echo: true)
+                playWithEffect("echo")
                 break
             case .Reverb:
-                playSound(reverb: true)
+                playWithEffect("reverb")
                 break
         }
     }
     
     @IBAction func stopPlayButton(sender: UIButton) {
-        configureUI(.NotPlaying)
-        stopAudio()
+        configureUI("NotPlaying")
+        if(self.audioPlayerNode.playing) {
+            self.audioPlayerNode.stop()
+        }
+        if(self.audioPlayer.playing) {
+            self.audioPlayer.stop()
+        }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
-        configureUI(.NotPlaying)
+        configureUI("NotPlaying")
     }
 
-    @IBAction func scrollThroughAudio(sender: AnyObject) {
-        self.audioPlayer.stop()
-        self.audioPlayer.currentTime = NSTimeInterval(slider.value)
-        self.audioPlayer.prepareToPlay()
-        self.audioPlayer.play()
+    /* Controlling Playback */
+    func updateSliderLocation() {
+        if (self.audioPlayer.playing) {
+            slider.value = Float(self.audioPlayer.currentTime)
+        }
+        else if (self.audioPlayerNode.playing){
+            slider.value = Float(currentTime())
+        }
     }
     
-    func updateSliderLocation() {
-        slider.value = Float(self.audioPlayer.currentTime)
+    @IBAction func scrollThroughAudio(sender: AnyObject) {
+        if (self.audioPlayer.playing) {
+            self.audioPlayer.stop()
+            self.audioPlayer.currentTime = NSTimeInterval(slider.value)
+            self.audioPlayer.prepareToPlay()
+            self.audioPlayer.play()
+        }
+        else if (self.audioPlayerNode.playing) {
+            self.audioPlayerNode.stop()
+            var nodetime: AVAudioTime  = self.audioPlayerNode.lastRenderTime!
+            var playerTime: AVAudioTime = self.audioPlayerNode.playerTimeForNodeTime(nodetime)!
+            var sampleRate = playerTime.sampleRate
+            var newsampletime = AVAudioFramePosition(sampleRate * Double(slider.value))
+            var length = Float(self.audioPlayer.duration) - slider.value
+            var framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+            if framestoplay > 100 {
+                self.audioPlayerNode.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, atTime: nil,completionHandler: nil)
+            }
+            self.audioPlayerNode.play()
+        }
     }
-    /*
-    // MARK: - Navigation
+    
+    
+    /* Controlling Speed and Pitch and Effects*/
+    func playWithSpeed(rate: Float) {
+        self.slider.maximumValue = Float(self.audioPlayer.duration)
+        configureUI("Playing")
+        self.audioPlayer.rate = rate
+        self.audioPlayer.play()
+        stopTimer(self.audioPlayer.duration)
+    }
+    
+    
+    func playWithPitch(pitch: Float) {
+        self.slider.maximumValue = Float(self.audioFile.length)
+        configureUI("Playing")
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+        
+        audioPlayerNode = AVAudioPlayerNode()
+        audioEngine.attachNode(audioPlayerNode)
+        
+        
+        let pitchChosen = AVAudioUnitTimePitch()
+        pitchChosen.pitch = pitch
+        audioEngine.attachNode(pitchChosen)
+        
+        audioEngine.connect(audioPlayerNode, to: pitchChosen, format: nil)
+        audioEngine.connect(pitchChosen, to: audioEngine.outputNode, format: nil)
+        
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        do {
+            try audioEngine.start()
+        }
+        catch {
+            
+        }
+        stopTimer(Double(audioFile.length))
+        audioPlayerNode.play()
+        
+        
+    }
+    
+    func playWithEffect(effect:String) {
+        
+    }
+    
+    /* UI Functions */
+    func configureUI(playState: String) {
+        switch(playState) {
+            case "Playing":
+                setPlayButtonsEnabled(false)
+                stopButton.enabled = true
+                break
+            case "NotPlaying":
+                setPlayButtonsEnabled(true)
+                stopButton.enabled = false
+                break
+            default:
+                break
+        }
+    }
+    
+    func stopTimer(seconds:Double) {
+        self.stopTimer = NSTimer(timeInterval: seconds, target: self, selector: #selector(PlaySoundsViewController.stopAudio), userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(self.stopTimer!, forMode: NSDefaultRunLoopMode)
+    }
+    func setPlayButtonsEnabled(enabled: Bool) {
+        snailButton.enabled = enabled
+        chipmunkButton.enabled = enabled
+        rabbitButton.enabled = enabled
+        vaderButton.enabled = enabled
+        echoButton.enabled = enabled
+        reverbButton.enabled = enabled
+    }
+    
+    
+    /* Setup */
+    func setupAudio() {
+        audioEngine = AVAudioEngine()
+        audioPlayerNode = AVAudioPlayerNode()
+        // initialize (recording) audio file
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOfURL: recordedAudio.filePathURL)
+            audioFile = try AVAudioFile(forReading: recordedAudio.filePathURL)
+        } catch {
+            
+        }
+        self.audioPlayer.enableRate = true
+        print("Audio has been setup")
+    }
+    
+    func stopAudio() {
+        self.stopTimer.invalidate()
+        configureUI("NotPlaying")
+        if(self.audioPlayerNode.playing) {
+            self.audioPlayerNode.stop()
+        }
+        if(self.audioPlayer.playing) {
+            self.audioPlayer.stop()
+        }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
+    
+    func stopSound() {
+        self.timer.invalidate()
+        configureUI("NotPlaying")
+        if(self.audioPlayerNode.playing) {
+            self.audioPlayerNode.stop()
+        }
+        if(self.audioPlayer.playing) {
+            self.audioPlayer.stop()
+        }
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+
+    private func currentTime() -> NSTimeInterval {
+        let nodeTime = self.audioPlayerNode.lastRenderTime
+        let playerTime = self.audioPlayerNode.playerTimeForNodeTime(nodeTime!)
+        
+        return Double((playerTime?.sampleTime)!)/(playerTime?.sampleRate)!
+    }
 
 }
