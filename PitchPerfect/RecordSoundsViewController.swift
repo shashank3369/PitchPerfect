@@ -29,9 +29,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
 
     @IBAction func recordAudio(sender: AnyObject) {
-        recordingLabel.text = "Recording in Progress"
-        recordButton.enabled = false
-        stopRecordButton.enabled = true
+        adjustUI(true)
         pauseButton.enabled = true
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
@@ -49,13 +47,18 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
 
     @IBAction func stopRecording(sender: AnyObject) {
-        recordingLabel.text = "Tap to Record"
-        stopRecordButton.enabled = false
-        recordButton.enabled = true
+        adjustUI(false)
         audioRecorder.stop()
         let session = AVAudioSession.sharedInstance()
         try! session.setActive(false)
     }
+    
+    func adjustUI(recording: Bool) {
+        stopRecordButton.enabled = recording
+        recordButton.enabled = !recording
+        recordingLabel.text = recording ? "Recording in Progress" : "Tap To Record"
+    }
+    
     
     override func viewWillAppear(animated: Bool) {
         stopRecordButton.enabled = false
@@ -67,10 +70,10 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         if (flag) {
             let session = AVAudioSession.sharedInstance()
             try! session.setCategory(AVAudioSessionCategoryPlayback)
-            self.performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
+            performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
         }
         else {
-            
+            showAlert("Recording Failed")
         }
     }
     
@@ -94,6 +97,12 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             let newRecordedObject = RecordedObject(url: recordedAudioURL, name: NSDate().description)
             playSoundsVC.recordedAudio = newRecordedObject
         }
+    }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A24C98C1D95C9B40001C31C /* PlaySoundsViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A24C98B1D95C9B40001C31C /* PlaySoundsViewControllerExtension.swift */; };
 		8ADAF8281D747B660039D088 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF8271D747B660039D088 /* AppDelegate.swift */; };
 		8ADAF82A1D747B660039D088 /* RecordSoundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF8291D747B660039D088 /* RecordSoundsViewController.swift */; };
 		8ADAF82D1D747B660039D088 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8ADAF82B1D747B660039D088 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A24C98B1D95C9B40001C31C /* PlaySoundsViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaySoundsViewControllerExtension.swift; sourceTree = "<group>"; };
 		8ADAF8241D747B660039D088 /* PitchPerfect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PitchPerfect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ADAF8271D747B660039D088 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8ADAF8291D747B660039D088 /* RecordSoundsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSoundsViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				8ADAF8271D747B660039D088 /* AppDelegate.swift */,
 				8ADAF8291D747B660039D088 /* RecordSoundsViewController.swift */,
 				8ADAF8551D7546070039D088 /* PlaySoundsViewController.swift */,
+				8A24C98B1D95C9B40001C31C /* PlaySoundsViewControllerExtension.swift */,
 				8ADAF82B1D747B660039D088 /* Main.storyboard */,
 				8ADAF8591D7695E60039D088 /* RecordedObject.swift */,
 				8ADAF82E1D747B660039D088 /* Assets.xcassets */,
@@ -267,6 +270,7 @@
 				8ADAF85A1D7695E60039D088 /* RecordedObject.swift in Sources */,
 				8ADAF8561D7546070039D088 /* PlaySoundsViewController.swift in Sources */,
 				8ADAF8281D747B660039D088 /* AppDelegate.swift in Sources */,
+				8A24C98C1D95C9B40001C31C /* PlaySoundsViewControllerExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
