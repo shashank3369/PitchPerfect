@@ -145,6 +145,7 @@ class PlaySoundsViewController: UIViewController {
         audioPlayerNode.play()
     }
     
+    //Used from Udacity File 
     func connectNodes(nodes: AVAudioNode...){
         for x in 0..<nodes.count-1 {
             audioEngine.connect(nodes[x], to: nodes[x+1], format: audioFile.processingFormat)
@@ -164,7 +165,6 @@ class PlaySoundsViewController: UIViewController {
             
         }
         self.audioPlayer.enableRate = true
-        print("Audio has been setup")
     }
     
 
