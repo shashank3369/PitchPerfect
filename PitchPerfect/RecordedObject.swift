@@ -9,10 +9,10 @@
 import Foundation
 
 class RecordedObject: NSObject {
-    var filePathURL: NSURL!
+    var filePathURL: URL!
     var title: String!
     
-    init(url: NSURL, name: String) {
+    init(url: URL, name: String) {
         filePathURL = url
         title = name
     }

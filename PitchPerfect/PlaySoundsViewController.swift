@@ -23,9 +23,9 @@ class PlaySoundsViewController: UIViewController {
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
-    var stopTimer: NSTimer!
+    var stopTimer: Timer!
     var audioPlayer: AVAudioPlayer!
-    var timer: NSTimer!
+    var timer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
     
-    @IBAction func playButton(sender: UIButton) {
+    @IBAction func playButton(_ sender: UIButton) {
         switch (ButtonType(rawValue: sender.tag)!) {
             case .slow:
                 playWithSpeed(0.5)
@@ -63,7 +63,7 @@ class PlaySoundsViewController: UIViewController {
     }
     
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
     }
 

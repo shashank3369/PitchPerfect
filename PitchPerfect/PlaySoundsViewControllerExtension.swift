@@ -14,7 +14,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     enum ButtonType: Int { case slow = 0, fast, vader, chipmunk, echo, reverb }
 
     /* Controlling Speed and Pitch and Effects*/
-    func playWithSpeed(rate: Float) {
+    func playWithSpeed(_ rate: Float) {
         resetAudio()
         
         self.audioPlayer.rate = rate
@@ -22,7 +22,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     }
     
     
-    func playWithPitch(pitch: Float) {
+    func playWithPitch(_ pitch: Float) {
         
         resetAudio()
         restartAudioNode()
@@ -30,12 +30,12 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         
         let pitchChosen = AVAudioUnitTimePitch()
         pitchChosen.pitch = pitch
-        audioEngine.attachNode(pitchChosen)
+        audioEngine.attach(pitchChosen)
         
         audioEngine.connect(audioPlayerNode, to: pitchChosen, format: nil)
         audioEngine.connect(pitchChosen, to: audioEngine.outputNode, format: nil)
         
-        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        audioPlayerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
         do {
             try audioEngine.start()
         }
@@ -48,7 +48,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         
     }
     
-    func playWithEffect(effect:String) {
+    func playWithEffect(_ effect:String) {
         resetAudio()
         
         restartAudioNode()
@@ -56,20 +56,20 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         
         if (effect == "echo") {
             let echoNode = AVAudioUnitDistortion()
-            echoNode.loadFactoryPreset(.MultiEcho1)
-            audioEngine.attachNode(echoNode)
+            echoNode.loadFactoryPreset(.multiEcho1)
+            audioEngine.attach(echoNode)
             connectNodes(audioPlayerNode, echoNode, audioEngine.outputNode)
         }
             
         else if (effect == "reverb"){
             let reverbNode = AVAudioUnitReverb()
-            reverbNode.loadFactoryPreset(.Cathedral)
+            reverbNode.loadFactoryPreset(.cathedral)
             reverbNode.wetDryMix = 50
-            audioEngine.attachNode(reverbNode)
+            audioEngine.attach(reverbNode)
             connectNodes(audioPlayerNode, reverbNode, audioEngine.outputNode)
         }
         
-        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        audioPlayerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
         do {
             try audioEngine.start()
         }
@@ -81,7 +81,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     }
     
     //Used from Udacity File
-    func connectNodes(nodes: AVAudioNode...){
+    func connectNodes(_ nodes: AVAudioNode...){
         for x in 0..<nodes.count-1 {
             audioEngine.connect(nodes[x], to: nodes[x+1], format: audioFile.processingFormat)
         }
@@ -94,8 +94,8 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         audioPlayerNode = AVAudioPlayerNode()
         // initialize (recording) audio file
         do {
-            audioPlayer = try AVAudioPlayer(contentsOfURL: recordedAudio.filePathURL)
-            audioFile = try AVAudioFile(forReading: recordedAudio.filePathURL)
+            audioPlayer = try AVAudioPlayer(contentsOf: recordedAudio.filePathURL as URL)
+            audioFile = try AVAudioFile(forReading: recordedAudio.filePathURL as URL)
         } catch {
             
         }
@@ -111,7 +111,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     
     func restartAudioNode() {
         audioPlayerNode = AVAudioPlayerNode()
-        audioEngine.attachNode(audioPlayerNode)
+        audioEngine.attach(audioPlayerNode)
 
     }
 }
