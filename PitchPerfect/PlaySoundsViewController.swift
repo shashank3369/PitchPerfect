@@ -17,7 +17,7 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var chipmunkButton: UIButton!
     @IBOutlet weak var echoButton: UIButton!
     @IBOutlet weak var reverbButton: UIButton!
-
+    @IBOutlet weak var scrubberSlider: UISlider!
     
     var recordedAudio: RecordedObject!
     var audioFile: AVAudioFile!
@@ -30,14 +30,13 @@ class PlaySoundsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
+        scrubberSlider.value = 0.0
         // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
+    @IBAction func updateCurrentTime(_ sender: UISlider) {
+        audioPlayer.currentTime = TimeInterval(sender.value)
+    }
     
     @IBAction func playButton(_ sender: UIButton) {
         switch (ButtonType(rawValue: sender.tag)!) {
@@ -60,11 +59,6 @@ class PlaySoundsViewController: UIViewController {
                 playWithEffect("reverb")
                 
         }
-    }
-    
-
-    override func viewWillAppear(_ animated: Bool) {
-        
     }
 
 }

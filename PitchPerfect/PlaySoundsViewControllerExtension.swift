@@ -16,11 +16,19 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     /* Controlling Speed and Pitch and Effects*/
     func playWithSpeed(_ rate: Float) {
         resetAudio()
+        scrubberSlider.maximumValue = Float(audioPlayer.duration)
+        audioPlayer.rate = rate
         
-        self.audioPlayer.rate = rate
-        self.audioPlayer.play()
+        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(PlaySoundsViewController.updateScrubSlider), userInfo: nil, repeats: true)
+        audioPlayer.play()
+        
+        
+
     }
     
+    func updateScrubSlider() {
+        scrubberSlider.value = Float(audioPlayer.currentTime)
+    }
     
     func playWithPitch(_ pitch: Float) {
         
@@ -44,7 +52,6 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         }
         
         audioPlayerNode.play()
-        
         
     }
     
