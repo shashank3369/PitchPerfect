@@ -12,22 +12,16 @@ import AVFoundation
 extension PlaySoundsViewController: AVAudioPlayerDelegate {
     
     enum ButtonType: Int { case slow = 0, fast, vader, chipmunk, echo, reverb }
-
+    
+    
     /* Controlling Speed and Pitch and Effects*/
     func playWithSpeed(_ rate: Float) {
         resetAudio()
-        scrubberSlider.maximumValue = Float(audioPlayer.duration)
+        
         audioPlayer.rate = rate
         
-        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(PlaySoundsViewController.updateScrubSlider), userInfo: nil, repeats: true)
+        setupScrubber(max: Float(audioPlayer.duration))
         audioPlayer.play()
-        
-        
-
-    }
-    
-    func updateScrubSlider() {
-        scrubberSlider.value = Float(audioPlayer.currentTime)
     }
     
     func playWithPitch(_ pitch: Float) {
@@ -51,8 +45,8 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
             
         }
         
+        setupScrubber(max: Float(Double(audioFile.length)/(audioPlayerNode.lastRenderTime?.sampleRate)!))
         audioPlayerNode.play()
-        
     }
     
     func playWithEffect(_ effect:String) {
@@ -84,6 +78,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
             
         }
         
+        setupScrubber(max: Float(Double(audioFile.length)/(audioPlayerNode.lastRenderTime?.sampleRate)!))
         audioPlayerNode.play()
     }
     
@@ -94,6 +89,41 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         }
     }
     
+    /* All Scrubber Related Functions */
+    func currentTime() -> TimeInterval {
+        if let nodeTime: AVAudioTime = audioPlayerNode.lastRenderTime, let playerTime: AVAudioTime = audioPlayerNode.playerTime(forNodeTime: nodeTime) {
+            return Double(playerTime.sampleTime) / playerTime.sampleRate
+        }
+        return 0
+    }
+    
+    func updateScrubSlider() {
+        if (audioPlayer.isPlaying) {
+            let currentTimeOfPlayer = Float(audioPlayer.currentTime)
+            scrubberSlider.value = currentTimeOfPlayer
+            if (currentTimeOfPlayer > scrubberSlider.maximumValue){
+                restartScrubber()
+            }
+        }
+        else if (audioPlayerNode.isPlaying){
+            let currentTimeOfNode = Float(currentTime())
+            scrubberSlider.value = currentTimeOfNode
+            if (currentTimeOfNode > scrubberSlider.maximumValue){
+                restartScrubber()
+            }
+        }
+    }
+    
+    func restartScrubber() {
+        timer.invalidate()
+        scrubberSlider.value = 0
+    }
+    
+    func setupScrubber(max: Float) {
+        scrubberSlider.minimumValue = 0.0
+        scrubberSlider.maximumValue = max
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(PlaySoundsViewController.updateScrubSlider), userInfo: nil, repeats: true)
+    }
     
     /* Setup */
     func setupAudio() {
@@ -119,6 +149,5 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     func restartAudioNode() {
         audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attach(audioPlayerNode)
-
     }
 }

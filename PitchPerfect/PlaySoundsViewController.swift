@@ -35,7 +35,28 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func updateCurrentTime(_ sender: UISlider) {
-        audioPlayer.currentTime = TimeInterval(sender.value)
+        if (audioPlayer.isPlaying) {
+            audioPlayer.currentTime = TimeInterval(sender.value)
+        }
+        else if (audioPlayerNode.isPlaying) {
+            let nodetime: AVAudioTime  = audioPlayerNode.lastRenderTime!
+            let playerTime: AVAudioTime = audioPlayerNode.playerTime(forNodeTime: nodetime)!
+            let sampleRate = playerTime.sampleRate
+            
+            let newsampletime = AVAudioFramePosition(sampleRate * Double(sender.value))
+
+            let songDuration = Double(audioFile.length)/(audioPlayerNode.lastRenderTime?.sampleRate)!
+            let length = Float(songDuration) - sender.value
+            let framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+            
+            audioPlayerNode.stop()
+            if framestoplay > 1000 {
+                audioPlayerNode.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+            }
+            setupScrubber(max: Float(Double(audioFile.length)/(audioPlayerNode.lastRenderTime?.sampleRate)!))
+            print("\(scrubberSlider.value) \(scrubberSlider.minimumValue) \(scrubberSlider.maximumValue)")
+            audioPlayerNode.play()
+        }
     }
     
     @IBAction func playButton(_ sender: UIButton) {
